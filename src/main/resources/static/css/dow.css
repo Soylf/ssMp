@@ -27,6 +27,34 @@ body {
   color: #ffffff;
 }
 
+.upload-container label {
+  display: block;
+  text-align: left;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  color: #cfcfcf;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.upload-container input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #2b2e3b;
+  border: 1px solid #3a3d4d;
+  border-radius: 8px;
+  color: #e0e0e0;
+  font-size: 14px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.upload-container input[type="text"]:focus {
+  border-color: #2196F3;
+  outline: none;
+}
+
 input[type="file"] {
   padding: 10px;
   margin-bottom: 20px;

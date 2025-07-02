@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const fileInput = document.getElementById('fileInput');
-  const fileName = document.getElementById('fileName');
-  const message = document.getElementById('message');
-  const uploadButton = document.getElementById('uploadButton');
+  async function uploadFile() {
+    const fileInput = document.getElementById('fileInput');
+    const message = document.getElementById('message');
+    const description = document.getElementById('description').value;
+    const category = document.getElementById('categoryInput').value;
 
-  uploadButton.addEventListener('click', async function () {
     if (!fileInput.files.length) {
       message.textContent = "⚠️ Пожалуйста, выберите файл.";
       return;
@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const file = fileInput.files[0];
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("description", description);
+    formData.append("category", category);
 
     try {
       const response = await fetch('/download', {
@@ -29,9 +31,15 @@ document.addEventListener('DOMContentLoaded', function () {
     } catch (error) {
       message.textContent = "⚠️ Ошибка соединения с сервером.";
     }
-  });
+  }
+
+  const fileInput = document.getElementById('fileInput');
+  const fileName = document.getElementById('fileName');
+  const uploadButton = document.getElementById('uploadButton');
 
   fileInput.addEventListener('change', () => {
     fileName.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : "Файл не выбран";
   });
+
+  uploadButton.addEventListener('click', uploadFile);
 });
