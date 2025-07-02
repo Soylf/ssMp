@@ -8,8 +8,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Entity
-@Table(name = "audios")
-public class AudioModel {
+@Table(name = "items")
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

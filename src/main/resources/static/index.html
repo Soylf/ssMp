@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@400;700&family=Raleway:wght@400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <link rel="stylesheet" href="css/dow.css" />
+    <title>Загрузка файлов</title>
+</head>
+<body>
+<div class="upload-container">
+    <h2><i class="fas fa-cloud-upload-alt"></i> Загрузка .mp3 и .mp4</h2>
+    <div class="custom-file-upload">
+        <input type="file" id="fileInput" accept=".mp3,.mp4">
+        <label for="fileInput"><i class="fas fa-file-upload"></i> Выбрать файл</label>
+        <span id="fileName">Файл не выбран</span>
+    </div>
+    <button id="uploadButton">Загрузить</button>
+    <div class="message" id="message"></div>
+</div>
+
+<script src="js/dow.js"></script>
+</body>
+</html>

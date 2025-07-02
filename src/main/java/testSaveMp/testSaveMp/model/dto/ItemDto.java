@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AudioModelDto {
+public class ItemDto {
     private String name;
     private String audioLink;
 }
