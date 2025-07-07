@@ -20,8 +20,8 @@ public class Item {
     private Long id;
     private String name;
     private String description;
-    private String audioLink;
-    private LocalDateTime date = LocalDate.now().atStartOfDay();
+    private String itemLink;
+    private LocalDateTime data = LocalDate.now().atStartOfDay();
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

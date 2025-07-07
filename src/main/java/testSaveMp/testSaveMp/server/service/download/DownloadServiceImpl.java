@@ -41,7 +41,7 @@ public class DownloadServiceImpl implements DownloadService{
 
 
         item.setName(multipartFile.getName());
-        item.setAudioLink(path);
+        item.setItemLink(path);
         item.setCategory(category);
         item.setDescription(description);
         itemRepository.save(item);

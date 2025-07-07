@@ -13,4 +13,7 @@ public interface CategoryRepository extends JpaRepository<Category,Long> {
     Optional<Category> findByName(String categoryName);
     @Query("SELECT c.name FROM Category c WHERE c.name LIKE %:query%")
     List<String> searchCategoryNames(@Param("query") String query, Pageable pageable);
+
+    @Query("SELECT c.name FROM Category c")
+    List<String> findAllName();
 }
