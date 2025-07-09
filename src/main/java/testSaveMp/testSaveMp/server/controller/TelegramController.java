@@ -6,21 +6,34 @@ import org.springframework.stereotype.Controller;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
+import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
+import org.telegram.telegrambots.meta.api.objects.media.InputMedia;
+import org.telegram.telegrambots.meta.api.objects.media.InputMediaAudio;
+import org.telegram.telegrambots.meta.api.objects.media.InputMediaDocument;
+import org.telegram.telegrambots.meta.api.objects.media.InputMediaVideo;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import testSaveMp.testSaveMp.config.BotConfig;
 import testSaveMp.testSaveMp.server.service.telegram.TelegramService;
 
+import java.io.File;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
 public class TelegramController extends TelegramLongPollingBot {
+    private boolean categoryCheck = false;
+    private boolean searchCheck = false;
     private final BotConfig botConfig;
     private final TelegramService service;
 
@@ -33,11 +46,8 @@ public class TelegramController extends TelegramLongPollingBot {
                 log.info("Добавлен новый пользователь: {} / {}", user.getId(), user.getFirstName());
                 service.saveUser(user);
             }
-            if(message.getText().equalsIgnoreCase("Выведи все категории")) {
-                String st = service.getCategories();
-                SendMessage(message.getChatId(),st);
-            }
             if(message.hasText()) {
+                String category = "Веселье";
                 String msg = message.getText();
                 String time = LocalTime.now().isAfter(LocalTime.of(18, 0)) ? "вечер" : "день";
                 switch (msg) {
@@ -46,9 +56,21 @@ public class TelegramController extends TelegramLongPollingBot {
                     case "/start" -> SendMessage(message.getChatId(),
                             "Добрый " + time + " " + user.getFirstName());
                 }
-                if(msg.equalsIgnoreCase("/search")) {
-                    SendMessage(message.getChatId(), "Введите что желаете найти:");
 
+                if(msg.equalsIgnoreCase("/search")) {
+                    sendSearchButtons(message.getChatId());
+                    category = msg;
+                    categoryCheck = true;
+                    searchCheck = true;
+                } else if(msg.equalsIgnoreCase("/unSearch")) {
+                    searchCheck = false;
+                    categoryCheck = false;
+                }
+
+                if(searchCheck && categoryCheck) {
+                    List<File> files = service.getItemFiles(message.getText(), category);
+                    List<InputMedia> inputMedia = List.of();
+                    SendDocument(message.getChatId(), inputMedia);
                 }
             }
         }
@@ -62,7 +84,9 @@ public class TelegramController extends TelegramLongPollingBot {
                 new BotCommand("/start",
                         "start"),
                 new BotCommand("/search",
-                        "search")
+                        "search"),
+                new BotCommand("/unSearch",
+                        "unSearch")
         );
         try {
             execute(new SetMyCommands(commands, new BotCommandScopeDefault(), null));
@@ -92,13 +116,36 @@ public class TelegramController extends TelegramLongPollingBot {
         }
     }
 
-    private void SendDocument(Long chatId, InputFile document) {
-        SendDocument sendDocument = new SendDocument();
+    private void SendDocument(Long chatId, List<InputMedia> documents) {
+        SendMediaGroup sendDocument = new SendMediaGroup();
         sendDocument.setChatId(chatId);
-        sendDocument.setDocument(document);
+        sendDocument.setMedias(documents);
         try {
             execute(sendDocument);
         }catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendSearchButtons(Long chatId) {
+        List<String> categories = service.getCategories();
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        for (String cat : categories) {
+            InlineKeyboardButton button = new InlineKeyboardButton();
+            button.setText(cat);
+            button.setSwitchInlineQueryCurrentChat(cat);
+            rows.add(List.of(button));
+        }
+        markup.setKeyboard(rows);
+
+        SendMessage msg = new SendMessage();
+        msg.setChatId(chatId.toString());
+        msg.setText("Выберите категорию:");
+        msg.setReplyMarkup(markup);
+        try {
+            execute(msg);
+        }catch (TelegramApiException e){
             e.printStackTrace();
         }
     }
