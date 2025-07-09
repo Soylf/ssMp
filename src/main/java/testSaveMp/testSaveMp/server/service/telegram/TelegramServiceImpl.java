@@ -52,6 +52,4 @@ public class TelegramServiceImpl implements TelegramService{
                 .map(File::new)
                 .collect(Collectors.toList());
     }
-
-
 }
