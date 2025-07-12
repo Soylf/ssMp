@@ -30,6 +30,8 @@ import java.util.List;
 public class TelegramController extends TelegramLongPollingBot {
     private boolean categoryCheck = false;
     private boolean searchCheck = false;
+    private boolean searchUserCheck = false;
+    private String category = null;
     private final BotConfig botConfig;
     private final TelegramService service;
 
@@ -45,15 +47,18 @@ public class TelegramController extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        Message message = update.getMessage();
+        String msg = message.getText();
         if (update.hasMessage()) {
-            Message message = update.getMessage();
             User user = message.getFrom();
-            String category = null;
-            String msg = message.getText();
             if (!service.checkUserId(user.getId())) {
                 log.info("Добавлен новый пользователь: {} / {}", user.getId(), user.getFirstName());
                 service.saveUser(user);
             }
+            if (msg.toLowerCase().startsWith("@" + botConfig.getBotName().toLowerCase())) { //@Napomica_bot
+                category = msg.replaceFirst("@" + botConfig.getBotName() + "\\s*", "").trim();
+            }
+
             if(message.hasText()) {
                 String time = LocalTime.now().isAfter(LocalTime.of(18, 0)) ? "вечер" : "день";
                 switch (msg) {
@@ -75,14 +80,19 @@ public class TelegramController extends TelegramLongPollingBot {
                 }
 
                 if(searchCheck) {
-                    sendSearchButtons(message.getChatId());
-                    category = msg.replaceFirst("@" + botConfig.getBotName() + "\\s*", "").trim();
-                    categoryCheck = true;
                     if(categoryCheck) {
                         SendMessage(message.getChatId(), "Введите че нить для поиска:");
-                        List<File> files = service.getItemFiles(message.getText(), category);
-                        ConvertMedia(files,message.getChatId());
+                        if(searchUserCheck) {
+                            searchUserCheck = false;
+                            categoryCheck = false;
+                            List<File> files = service.getItemFiles(msg, category);
+                            ConvertMedia(files,message.getChatId());
+                        }
+                        searchUserCheck = true;
+                    }else {
+                        sendSearchButtons(message.getChatId());
                     }
+                    categoryCheck = true;
                 }
             }
         }
@@ -119,7 +129,7 @@ public class TelegramController extends TelegramLongPollingBot {
                     inputMediaVideos.add(i);
                 }
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
         SendDocument(chatId, inputMediaAudios, inputMediaVideos);
@@ -138,17 +148,22 @@ public class TelegramController extends TelegramLongPollingBot {
 
     private void SendDocument(Long chatId, List<InputMediaAudio> inputMediaAudios,
                                             List<InputMediaVideo> inputMediaVideos) {
-        List<InputMedia> inputMedia = new ArrayList<>();
         SendMediaGroup group = new SendMediaGroup();
-        inputMedia.addAll(inputMediaVideos);
-        inputMedia.addAll(inputMediaAudios);
+        SendMediaGroup groupAudio = new SendMediaGroup();
+        List<InputMedia> inputMedia = new ArrayList<>(inputMediaVideos);
+        List<InputMedia> inputAudio = new ArrayList<>(inputMediaAudios);
 
         if(inputMedia.isEmpty()) return;
+        if(inputAudio.isEmpty()) return;
 
         group.setChatId(chatId);
         group.setMedias(inputMedia);
+
+        groupAudio.setChatId(chatId);
+        groupAudio.setMedias(inputAudio);
         try {
             execute(group);
+            execute(groupAudio);
         }catch (TelegramApiException e) {
             e.printStackTrace();
         }

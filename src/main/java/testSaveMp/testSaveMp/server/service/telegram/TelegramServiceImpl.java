@@ -6,16 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.objects.User;
-import testSaveMp.testSaveMp.model.Item;
 import testSaveMp.testSaveMp.model.UserModel;
 import testSaveMp.testSaveMp.server.repository.CategoryRepository;
 import testSaveMp.testSaveMp.server.repository.ItemRepository;
 import testSaveMp.testSaveMp.server.repository.UserRepository;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,7 +43,7 @@ public class TelegramServiceImpl implements TelegramService{
 
     @Override
     public List<File> getItemFiles(String message, String category) {
-        Pageable limit = PageRequest.of(0, 5);
+        Pageable limit = PageRequest.of(0, 6);
         List<String> items = itemRep.findItemLinksByMessageAndCategory(message, category, limit);
         return items.stream()
                 .map(File::new)
