@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.*;
@@ -149,23 +150,29 @@ public class TelegramController extends TelegramLongPollingBot {
     private void SendDocument(Long chatId, List<InputMediaAudio> inputMediaAudios,
                                             List<InputMediaVideo> inputMediaVideos) {
         SendMediaGroup group = new SendMediaGroup();
-        SendMediaGroup groupAudio = new SendMediaGroup();
         List<InputMedia> inputMedia = new ArrayList<>(inputMediaVideos);
+
+        SendMediaGroup groupAudio = new SendMediaGroup();
         List<InputMedia> inputAudio = new ArrayList<>(inputMediaAudios);
 
-        if(inputMedia.isEmpty()) return;
-        if(inputAudio.isEmpty()) return;
+        if(inputAudio.size() == 1) {
+            SendDocument(chatId, inputAudio.getFirst().getNewMediaFile());
+            inputAudio.clear();
+        } else if (inputMedia.size() == 1) {
+            SendDocument(chatId, inputMedia.getFirst().getNewMediaFile());
+            inputMedia.clear();
+        }else {
+            group.setChatId(chatId);
+            group.setMedias(inputMedia);
 
-        group.setChatId(chatId);
-        group.setMedias(inputMedia);
-
-        groupAudio.setChatId(chatId);
-        groupAudio.setMedias(inputAudio);
-        try {
-            execute(group);
-            execute(groupAudio);
-        }catch (TelegramApiException e) {
-            e.printStackTrace();
+            groupAudio.setChatId(chatId);
+            groupAudio.setMedias(inputAudio);
+            try {
+                execute(group);
+                execute(groupAudio);
+            }catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -191,4 +198,16 @@ public class TelegramController extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
+
+    private void SendDocument(Long chatId, File file) {
+        SendDocument msg = new SendDocument();
+        msg.setDocument(new InputFile(file));
+        msg.setChatId(chatId);
+        try {
+            execute(msg);
+        }catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

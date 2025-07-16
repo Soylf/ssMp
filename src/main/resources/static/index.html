@@ -1,39 +1,41 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <title>Главная</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@400;700&family=Raleway:wght@400;600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@400;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="css/dow.css" />
-    <link rel="stylesheet" href="css/search.css">
-    <title>Загрузка файлов</title>
+    <link rel="stylesheet" href="css/index/index.css">
+    <link rel="stylesheet" href="css/gradi.css">
 </head>
 <body>
-<div class="upload-container">
-    <h2><i class="fas fa-cloud-upload-alt"></i> Загрузка .mp3 и .mp4</h2>
-    <div class="custom-file-upload">
-        <input type="file" id="fileInput" accept=".mp3,.mp4">
-        <label for="fileInput"><i class="fas fa-file-upload"></i> Выбрать файл</label>
-        <span id="fileName">Файл не выбран</span>
-    </div>
-
-    <label for="description">Описание:</label>
-    <input type="text" id="description" placeholder="Введите описание файла" />
-
-    <div class="category-wrapper">
-        <label for="categoryInput">Категория:</label><input type="text" id="categoryInput" placeholder="Начните вводить категорию..." autocomplete="off" />
-        <div id="suggestions"></div>
-    </div>
-
-    <button id="uploadButton">Загрузить</button>
-    <div class="message" id="message"></div>
+<div class="menu-toggle" onclick="toggleMenu()">
+    <i class="fas fa-bars"></i>
 </div>
 
-<script src="js/dow.js"></script>
-<script src="js/search.js"></script>
+<div id="sideMenu" class="side-menu">
+    <ul>
+        <li><i class="fas fa-info-circle"></i> Info</li>
+        <li><a href="download.html"><i class="fas fa-download"></i> Download</a></li>
+    </ul>
+</div>
+
+<div class="search-icon">
+    <i class="fas fa-search"></i>
+</div>
+
+<div class="gradient-background">
+    <div class="blue-layer"></div>
+    <div class="red-layer"></div>
+</div>
+<script>
+    function toggleMenu() {
+    const menu = document.getElementById('sideMenu');
+    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    }
+</script>
 </body>
 </html>
