@@ -1,4 +1,4 @@
-package testSaveMp.testSaveMp.server.service.telegram;
+package testSaveMp.testSaveMp.server.service.web;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Transactional
-public class TelegramServiceImpl implements TelegramService{
+public class WebServiceImpl implements WebService {
     private final UserRepository userRep;
     private final ItemRepository itemRep;
     private final CategoryRepository categoryRep;

@@ -10,10 +10,22 @@
 
     <link rel="stylesheet" href="css/download/dow.css" />
     <link rel="stylesheet" href="css/download/search.css">
-    <link rel="stylesheet" href="css/gradi.css">
+    <link rel="stylesheet" href="css/dop/gradi.css">
+    <link rel="stylesheet" href="css/dop/uploadContainer.css">
+    <link rel="stylesheet" href="css/dop/menu.css">
     <title>Загрузка файлов</title>
 </head>
 <body>
+<div class="menu-toggle" onclick="toggleMenu()">
+    <i class="fas fa-bars"></i>
+</div>
+<div id="sideMenu" class="side-menu">
+    <ul>
+        <li><i class="fas fa-info-circle"></i> Информация</li>
+        <li><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+    </ul>
+</div>
+
 <div class="gradient-background">
     <div class="blue-layer"></div>
     <div class="red-layer"></div>
@@ -41,5 +53,11 @@
 
 <script src="js/download/dow.js"></script>
 <script src="js/download/search.js"></script>
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('sideMenu');
+        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+</script>
 </body>
 </html>

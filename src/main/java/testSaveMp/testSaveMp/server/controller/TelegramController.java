@@ -18,7 +18,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import testSaveMp.testSaveMp.config.BotConfig;
-import testSaveMp.testSaveMp.server.service.telegram.TelegramService;
+import testSaveMp.testSaveMp.server.service.web.WebService;
 
 import java.io.File;
 import java.time.LocalTime;
@@ -34,7 +34,7 @@ public class TelegramController extends TelegramLongPollingBot {
     private boolean searchUserCheck = false;
     private String category = null;
     private final BotConfig botConfig;
-    private final TelegramService service;
+    private final WebService service;
 
     @Override
     public String getBotUsername() {
