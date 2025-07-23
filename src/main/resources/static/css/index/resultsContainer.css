@@ -1,0 +1,163 @@
+/* Основные стили и адаптивное масштабирование */
+:root {
+  --scale-factor: 1;
+}
+
+@media (max-width: 600px) {
+  /* Для маленьких экранов уменьшаем масштаб на 15% */
+  :root {
+    --scale-factor: 0.85;
+  }
+}
+
+@media (min-width: 1200px) {
+  /* Для больших экранов увеличиваем масштаб на 15% */
+  :root {
+    --scale-factor: 1.15;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.results-container {
+  width: calc(90vw * var(--scale-factor));
+  max-width: calc(800px * var(--scale-factor));
+  padding: calc(2.5vh * var(--scale-factor)) calc(2vw * var(--scale-factor));
+  border-radius: calc(1.5rem * var(--scale-factor));
+  background-color: #1f2129;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  position: relative;
+  z-index: 11;
+  max-height: calc(85vh * var(--scale-factor));
+  overflow-y: auto;
+}
+
+.item-pyramid {
+  display: grid;
+  grid-template-areas:
+    ".  a  b  c  ."
+    ".  d  e  f  .";
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  justify-items: center;
+}
+
+.item-card {
+  background-color: #2b2e3b;
+  border: 1px solid #3a3d4d;
+  border-radius: calc(0.625rem * var(--scale-factor));
+  padding: calc(0.8rem * var(--scale-factor));
+  color: #e0e0e0;
+  text-align: center;
+  font-size: calc(0.9rem * var(--scale-factor));
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: calc(18vw * var(--scale-factor));
+  max-width: 200px;
+  height: auto;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #2196f3;
+}
+
+.item-card.active {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px #2196f3;
+  z-index: 15;
+}
+
+.item-card .item-description {
+  margin-top: 8px;
+  font-size: calc(0.85rem * var(--scale-factor));
+  color: #cfd8dc;
+  text-align: center;
+  word-wrap: break-word;
+  max-width: 90%;
+}
+
+.item-card video,
+.item-card audio {
+  width: 100%;
+  height: calc(12vh * var(--scale-factor));
+  max-height: calc(120px * var(--scale-factor));
+  margin-bottom: calc(0.625rem * var(--scale-factor));
+  border-radius: calc(0.375rem * var(--scale-factor));
+  background-color: black;
+  object-fit: cover;
+}
+
+/* Модальное окно для увеличенного плеера */
+#modal-player-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(15, 17, 21, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+#modal-player-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#modal-player {
+  background: #1f2129;
+  padding: calc(2vh * var(--scale-factor)) calc(2vw * var(--scale-factor));
+  border-radius: calc(1.5rem * var(--scale-factor));
+  max-width: calc(80vw * var(--scale-factor));
+  max-height: calc(80vh * var(--scale-factor));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+#modal-player .close-btn {
+  position: absolute;
+  top: calc(1vh * var(--scale-factor));
+  right: calc(1vw * var(--scale-factor));
+  background: transparent;
+  border: none;
+  font-size: calc(2.8rem * var(--scale-factor));
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+#modal-player .close-btn:hover {
+  color: #fff;
+}
+
+#modal-player video,
+#modal-player audio {
+  width: 100%;
+  max-height: calc(60vh * var(--scale-factor));
+  border-radius: calc(0.625rem * var(--scale-factor));
+  background-color: black;
+}

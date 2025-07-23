@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <link rel="stylesheet" href="css/index/index.css">
+    <link rel="stylesheet" href="css/index/resultsContainer.css">
     <link rel="stylesheet" href="css/dop/gradi.css">
     <link rel="stylesheet" href="css/dop/menu.css">
     <link rel="stylesheet" href="css/dop/uploadContainer.css">
@@ -28,8 +29,21 @@
 <div class="upload-container">
     <h2><i class="fa-solid fa-star"></i> Всем хай!</h2>
     <label for="description"><i class="fa-solid fa-magnifying-glass"></i> Поиск:</label>
-    <input type="text" id="description" placeholder="Что хотите найти" />
+    <div class="search-box">
+        <input type="text" id="description" placeholder="Что хотите найти" />
+        <button id="search-btn" class="search-button" aria-label="Поиск">
+            <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </div>
     <div id="category-grid" class="category-grid"></div>
+</div>
+<div id="search-results-overlay" class="overlay hidden">
+    <div class="results-container" id="results-container">
+        <div id="item-pyramid" class="item-pyramid"></div>
+    </div>
+</div>
+<div id="modal-player-overlay">
+    <div id="modal-player"></div>
 </div>
 
 <div class="gradient-background">
@@ -43,5 +57,6 @@
         }
 </script>
 <script src="js/index/loadCategories.js"></script>
+<script src="js/index/search.js"></script>
 </body>
 </html>

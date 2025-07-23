@@ -21,4 +21,16 @@ public interface ItemRepository extends JpaRepository<Item, Long>{
             @Param("category") String category,
             Pageable pageable
     );
+
+    @Query("""
+        SELECT i FROM Item i
+        WHERE i.category.name = :category
+        AND (LOWER(i.name) LIKE LOWER(CONCAT('%', :message, '%'))
+        OR LOWER(i.description) LIKE LOWER(CONCAT('%', :message, '%')))
+        """)
+    List<Item> findItemByMessageAndCategory(
+            @Param("message") String message,
+            @Param("category") String category,
+            Pageable pageable
+    );
 }
