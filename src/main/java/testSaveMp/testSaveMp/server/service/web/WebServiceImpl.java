@@ -58,8 +58,13 @@ public class WebServiceImpl implements WebService {
     @Override
     public List<ItemDto> getItemFilesWeb(String msg, String category) {
         List<ItemDto> itemDos = new ArrayList<>();
+        List<Item> items = List.of();
         Pageable limit = PageRequest.of(0, PAGE_SIZE_WEB);
-        List<Item> items = itemRep.findItemByMessageAndCategory(msg,category,limit);
+        if(!category.isEmpty()) {
+            items = itemRep.findItemByMessageAndCategory(msg,category,limit);
+        }else {
+            items = itemRep.findItemByMessage(msg,limit);
+        }
         for(Item i: items){
             ItemDto itemDto = new ItemDto();
             itemDto.setName(i.getName());
