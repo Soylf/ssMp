@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<Category,Long> {
     Optional<Category> findByName(String categoryName);
-    @Query("SELECT c.name FROM Category c WHERE c.name LIKE %:query%")
+    @Query("SELECT c.name FROM Category c WHERE c.name LIKE %:query%") //Вот это не правильно, оно работет, но за N0-1 скорость, это медленно + нету базовой развертки по типу... параметров страницы
     List<String> searchCategoryNames(@Param("query") String query, Pageable pageable);
 
     @Query("SELECT c.name FROM Category c")

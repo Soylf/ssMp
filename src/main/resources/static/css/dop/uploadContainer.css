@@ -25,7 +25,8 @@
   font-size: 14px;
 }
 
-.upload-container input[type="text"] {
+.upload-container input[type="text"],
+.upload-container input[type="password"] {
   width: 100%;
   padding: 10px;
   background-color: #2b2e3b;
@@ -38,7 +39,24 @@
   transition: border-color 0.3s ease;
 }
 
-.upload-container input[type="text"]:focus {
+.upload-container input[type="text"]:focus,
+.upload-container input[type="password"]:focus {
   border-color: #2196F3;
   outline: none;
 }
+
+.upload-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #2196F3;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+}
+
+.upload-container button:hover {
+            background-color: #1976D2;
+        }
