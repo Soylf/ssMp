@@ -7,11 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-    <link rel="stylesheet" href="css/dop/gradi.css">
-    <link rel="stylesheet" href="css/dop/menu.css">
-    <link rel="stylesheet" href="css/dop/uploadContainer.css">
-    <link rel="stylesheet" href="css/dop/customBody.css">
-    <link rel="stylesheet" href="css/login/login.css">
+    <link rel="stylesheet" th:href="@{/css/dop/gradi.css}">
+    <link rel="stylesheet" th:href="@{/css/dop/menu.css}">
+    <link rel="stylesheet" th:href="@{/css/dop/uploadContainer.css}">
+    <link rel="stylesheet" th:href="@{/css/dop/customBody.css}">
 
     <meta charset="UTF-8">
     <title>Login</title>
@@ -22,25 +21,24 @@
 </div>
 <div id="sideMenu" class="side-menu">
     <ul>
-        <li><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+        <li><a th:href="@{/index.html}"><i class="fas fa-home"></i> Главная</a></li>
     </ul>
 </div>
 
 <div class="upload-container">
     <h2><i class="fas fa-sign-in" style="color: #aceba9;"></i> Вход в систему</h2>
 
-    <form method="post" action="/login">
+    <form th:action="@{/perform_login}" method="post">
         <label for="username">Имя пользователя</label>
         <input type="text" id="username" name="username" placeholder="Введите имя пользователя" required>
 
         <label for="password">Пароль</label>
         <input type="password" id="password" name="password" placeholder="Введите пароль" required>
 
-        <button type="submit">Войти</button>
+        <button type="submit" name="submit">Войти</button>
     </form>
 
-    <div id="errorMsg" style="color:red; display:none;">Неверный логин или пароль</div>
-    <div id="logoutMsg" style="color:green; display:none;">Вы вышли из системы</div>
+    <div th:if="${param.error}" style="color:red;">Неверный логин или пароль</div>
 
 </div>
 
